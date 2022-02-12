@@ -9,8 +9,8 @@
 
 <p align="center">
     <img alt="python-3.7.7" src="https://img.shields.io/badge/python-3.7.7-blue"/>
-    <img alt="huggingface-3.1.0" src="https://img.shields.io/badge/KakaoTalk-offline-yellow"/>
-    <img alt="pytorch-1.7.0" src="https://img.shields.io/badge/chromedriver-79.0.3945-blueviolet"/>
+    <img alt="huggingface-3.1.0" src="https://img.shields.io/badge/huggingface-3.1.0-yellow"/>
+    <img alt="pytorch-1.7.0" src="https://img.shields.io/badge/pytorch-1.7.0-blueviolet"/>
     <img alt="GitHub" src="https://img.shields.io/github/license/metterian/redbttn-seoul-studio"/>
 </p>
 
