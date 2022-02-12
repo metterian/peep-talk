@@ -22,7 +22,9 @@
 
 ## Dataset
 
-- Download testset of SITUATION-CHAT from this [link]()
+- Download testset of SITUATION-CHAT from this [link](https://raw.githubusercontent.com/metterian/peep-talk/master/data/situationchat_original_test.json)
+
+
 
 <br/>
 
