@@ -71,7 +71,7 @@ python app.py
 
 ## Demo
 - [Web](http://peeptalk.xyz)
-- [Video](https://youtu.be/Mma23gbCMAU)
+- [Video](https://www.youtube.com/watch?v=PXlIEOi54wY)
 
 
 
