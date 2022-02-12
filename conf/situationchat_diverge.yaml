@@ -1,0 +1,17 @@
+params:
+  model : gpt2
+  max_history: 2
+  no_sample : True
+  max_length: 20
+  device: cuda
+  min_length: 1
+  seed: 0
+  temperature: 0.7
+  top_k: 0
+  top_p: 0.9
+
+files:
+  dataset_path: ${hydra:runtime.cwd}/data/situationchat_divergence.json
+  dataset_cache: ${hydra:runtime.cwd}/situationchat_divergence_dataset_cache_GPT2Tokenizer
+  model_checkpoint: ${hydra:runtime.cwd}/runs/Jan04_06-40-10_situation_diverge_gpt2
+

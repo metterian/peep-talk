@@ -1,0 +1,352 @@
+{
+    "직장에서의 일상 대화": [
+        "I work at a company.",
+        "I work with my boss, colleagues, and subordinates.",
+        "I'm having a daily conversation at work."
+    ],
+    "찬성 및 반대": [
+        "I'm in a meeting.",
+        "I am talking about pros and cons."
+    ],
+    "취직 면접 상황": [
+        "I'm unemployed.",
+        "I'm looking for a job.",
+        "I'm having a job interview."
+    ],
+    "학교생활": [
+        "i just took a quiz.",
+        "i have a test.",
+        "i have a family road trip planned for the western u.s.",
+        "i attend the class."
+    ],
+    "원하는 스타일에 대해 점원 or 친구와 대화 시술 전/시술 시/시술 후 대화": [
+        "I came to the hair salon.",
+        "I want to change my hairstyle.",
+        "I'm talking to the clerk about the style I want.",
+        "I'm talking to a friend about the style I want."
+    ],
+    "제안 및 협상하기": [
+        "i am worried that our company's mobile phone sales are declining.",
+        "I have a business conversation.",
+        "I'm negotiating with business customers.",
+        "I propose a contract."
+    ],
+    "CS/고객 상담": [
+        "I'm a customer service agent.",
+        "I respond to customer requests.",
+        "The phone number is 000-0000-0000.",
+        "the custormer ordered product."
+    ],
+    "마케팅/홍보": [
+        "The project proposal is due tomorrow,",
+        "A new product was released last week.",
+        "I want to negotiate the price.",
+        "I want to promote the released product."
+    ],
+    "증상을 묻고 답하는 상황": [
+        "I came to the hospital because I was sick.",
+        "I'm talking to a doctor about symptoms.",
+        "I'm talking to a doctor at the hospital."
+    ],
+    "인사관리": [
+        "I will only be able to work till the end of this week.",
+        "I will have to take an early leave.",
+        "About the sign up for voluntary resignation being conducted this time.",
+        "I am not confident with sales."
+    ],
+    "IT/컴퓨터 (수리": [
+        "There is a problem with computers and IT devices.",
+        "I am a PC repair engineer.",
+        "I'm talking about PC repair."
+    ],
+    "음식 먹고 맛 평가하는 상황": [
+        "I am eating food.",
+        "I am evaluating after eating food.",
+        "I am a food critic."
+    ],
+    "^비행기 안" :[
+        "i'm in the airplane.",
+        "i'm traveling to New york.",
+        "I'm sitting in the airplane seat.",
+        "I'm talking on the plane."
+    ],
+    "화장품 가게" : [
+        "I'm at a cosmetics store.",
+        "I'm choosing cosmetics.",
+        "I'm going to buy cosmetics.",
+        "I'm talking about cosmetics."
+    ],
+    "회의 일정 잡기" : [
+        "I'd like to schedule a meeting.",
+        "I coordinate the schedule.",
+        "I have a meeting."
+    ],
+    "서점, 문구점" : [
+        "I'm in the book store",
+        "I'm at the stationery store.",
+        "I'm trying to buy stationery."
+    ],
+    "주문한 상품의 배송 상태 문의/응답" : [
+        "I orderd the product.",
+        "I am inquiring about the delivery status."
+    ],
+    "복용법에 대해 얘기하는 상황" : [
+        "I'm talking about how to take medicine.",
+        "I'm talking to the pharmacist.",
+        "I'm curious about the dosage."
+    ],
+    "면세점 이용" : [
+        "I'm using a duty-free shop.",
+        "I'm curious about using the duty-free shop.",
+        "I'm at the duty-free shop."
+    ],
+    "^면세점$" : [
+        "I'm using a duty-free shop.",
+        "I'm curious about using the duty-free shop.",
+        "I'm at the duty-free shop."
+    ],
+    "출장을 가기 위해 업무적으로 준비해야 하는 상황" : [
+        "I'm going on a business trip.",
+        "I have to prepare for a business trip."
+    ],
+    "주문 내역에 대해 수정이 필요한 상황" : [
+        "The order details need to be revised.",
+        "I ordered the product.",
+        "I'm talking to custormer service agent."
+    ],
+    "입원/퇴원" : [
+        "I have been hospitalized.",
+        "I am leaving the hospital.",
+        "I'm talking to the patients.",
+        "I'm talking about hospitalization and discharge."
+    ],
+    "출장 경비처리를 해야 하는 상황" : [
+        "I have to pay for the business trip expenses.",
+        "A few days ago went on a business trip.",
+        "I'm talking to the accounting staff."
+    ],
+    "제품/배송에 특별한" : [
+        "I'm making a special request for product and delivery.",
+        "I'm trying to get a product.",
+        "It is asking the seller."
+    ],
+    "운동 레슨을 받는 상황" : [
+        "I'm taking exercise lessons.",
+        "I'm working out."
+    ],
+    "미술관, 박물관에서 대화" : [
+        "I'm talking at art galleries and museums.",
+        "I'm a museum."
+    ],
+    "제품에 문제가 있는 상황" : [
+        "I bought something.",
+        "There is a problem with the product.",
+        "I'm talking to a counselor."
+    ],
+    "극장, 공연장에서 관람 전, 관람 후 대화" : [
+        "I'm in the theater.",
+        "I'm talking at the theater.",
+        "I'm watching a play."
+    ],
+    "간단한 구급처치를 위한 방법 질문 및 약품 구매하는 상황" : [
+        "I want to do a simple first aid.",
+        "I'm asking questions for first aid.",
+        "I'm buying medicine for first aid.",
+        "I'm talking to a pharmacist."
+    ],
+    "관공서/행정 업무보는 상황" : [
+        "I'm in a government office.",
+        "I am working on administrative affairs.",
+        "I'm talking to a public official."
+    ],
+    "마트 (물건 찾기" : [
+        "I'm at the mart.",
+        "I'm looking for a product at the mart.",
+        "I'm looking for an instant product.",
+        "I'm looking for a fresh product."
+    ],
+    "객실 내 문제 해결 요청" : [
+        "I'm tied to a hotel.",
+        "There is a problem with the room.",
+        "I am requesting to solve the room problem."
+    ],
+    "환전 및 여행자 수표가 필요한 상황" : [
+        "I want to exchange money.",
+        "I need a check.",
+        "I am traveling."
+    ],
+    "가격 묻기, 흥정" : [
+        "I want to buy something.",
+        "I'm asking the price.",
+        "I want a bargain."
+    ],
+    "여행 일정 변경하는 상황" : [
+        "I'm going to go on a trip.",
+        "I would like to change my itinerary."
+    ],
+    "접수/수납하는" : [
+        "I'd like to apply to the hospital.",
+        "I want to pay in the hospital.",
+        "I'm in the hospital."
+    ],
+    "택시": [
+        "I am taking a taxi.",
+        "I'm talking to the driver in the taxi."
+    ],
+    "분실/도난 당한 상황": [
+        "I've lost something.",
+        "I had something stolen."
+    ] ,
+    "원하는 객실 타입 요청할 때": [
+        "I have the type of room I want.",
+        "I'm asking for hotel rooms type."
+    ] ,
+    "목적지까지 위치 안내가 필요한 상황": [
+        "I need location guidance to my destination.",
+        "I don't know how to get to my destination."
+    ] ,
+    "투어/관람 예약하는 상황": [
+        "I would like to book a tour package.",
+        "I am inquiring about the tour package."
+    ] ,
+    "그룹 과제를 하는 상황": [
+        "I belong to a team.",
+        "I am working on a group project."
+    ] ,
+    "관람/콘서트 일정에 대해 묻는 상황": [
+        "I am interested in concerts.",
+        "I am talking about the concert schedule. ",
+        "I want to see a concert."
+    ] ,
+    "입학/ 졸업하는 상황": [
+        "Graduation/admission ceremony is scheduled in a few days.",
+        "I'm talking about graduation. ",
+        "I'm a student."
+    ] ,
+    "물리치료를 받는 상황": [
+        "I got bruises.",
+        "I'm undergoing physical therapy.",
+        "I feel uncomfortable when I move."
+    ] ,
+    "시험에 대해 이야기하는 상황": [
+        "The test is scheduled in a few days.",
+        "I am studying for an exam. ",
+        "I am a student."
+    ] ,
+    "지하철 이용": [
+        "I am using the subway.",
+        "I'm talking about the subway."
+    ] ,
+    "판매/구입 문의 및 답변": [
+        "I bought a product.",
+        "I'm talking to the seller about the product."
+    ] ,
+    "버스 이용": [
+        "I'm talking about the bus.",
+        "I am taking a bus."
+    ] ,
+    "방 있는지 문의할 때": [
+        "I'm asking if there's an empty room.",
+        "I want to reserve a room."
+    ] ,
+    "교환, 환불": [
+        "There is a problem with the product I purchased.",
+        "I am inquiring about exchange and refund.",
+        "I'm a customer."
+    ] ,
+    "소요시간, 가는 방법에 대해 대화": [
+        "I'm going somewhere.",
+        "I wonder how long it takes to get to the destination.",
+        "I'm talking about how to go."
+    ] ,
+    "위치찾기": [
+        "I'm going somewhere.",
+        "I'm looking for a destination. ",
+        "I'm talking about how to go."
+    ] ,
+    "옷가게, 신발가게": [
+        "I'm at the clothing store.",
+        "I'm going to buy clothes and shoes.",
+        "I am asking about product information."
+    ] ,
+    "축하 및 감사 전화": [
+        "I'm calling congratulations and thanks.",
+        "I'm grateful.",
+        "I had a good thing recently."
+    ] ,
+    "못먹는 음식/재료가 있을 때": [
+        "I have food that I can't eat.",
+        "I hate something."
+    ] ,
+    "제품에 문제가 있어 교환/ 환불 필요한 상황": [
+        "I bought something.",
+        "There is a problem with the product.",
+        "I would like to exchange or refund."
+    ] ,
+    "셔틀 버스 문의 상황": [
+        "I'm going to take a shuttle bus.",
+        "I am curious about the shuttle bus time."
+    ] ,
+    "시설 위치 문의할 때": [
+        "I'm looking for the location of the facility.",
+        "I'm asking about the location of the facility."
+    ] ,
+    "^계산$": [
+        "I bought something.",
+        "I'm going to pay for it."
+    ] ,
+    "계산 */ *포장할": [
+        "I bought something.",
+        "I'm going to pay for it."
+    ] ,
+    "지각한 상황": [
+        "I have an appointment.",
+        "I was late."
+    ] ,
+    "제품이 있는지 문의할 때": [
+        "I'm talking to the seller.",
+        "I'm asking if the product is in stock."
+    ] ,
+    "동아리활동": [
+        "We are talking about club activities."
+    ] ,
+    "사진 촬영하고 싶을 때 다른 관광객에게 부탁": [
+        "I want to take a picture.",
+        "I am asking another tourist for a photo shoot.",
+        "I'm on a trip."
+    ] ,
+    "체크인/체크아웃할 때": [
+        "I'm checking in or checking out.",
+        "I'm talking to the hotel staff."
+    ] ,
+    "다이어트에는 무슨 운동이 좋은지 대화하는 상황": [
+        "I'm on a diet.",
+        "I want to exercise."
+    ] ,
+    "연예인 가십": [
+        "We are talking about the movie.",
+        "We are interested in celebrities."
+    ] ,
+    "맛 표현, 음식 평가": [
+        "I'm eating a food.",
+        "We are talking about food.",
+        "I'm doing an assessment of the flavor."
+    ] ,
+    "연말 회식하는 상황": [
+        "We are having a year-end dinner.",
+        "We're at a company dinner."
+    ] ,
+    "길 잃은 상황": [
+        "I'm lost.",
+        "I'm looking for a way."
+    ] ,
+    "음식 재촉, 음식 문제, 서비스 문제": [
+        "I ordered food.",
+        "There is a problem with food orders.",
+        "I'm talking to the waiter."
+    ] ,
+    "^지하철": [
+        "I am using the subway.",
+        "I'm talking about the subway."
+    ]
+}

@@ -1,0 +1,19 @@
+params:
+  model : gpt2
+  max_history: 2
+  no_sample : True
+  max_length: 20
+  device: cuda
+  min_length: 1
+  seed: 0
+  temperature: 0.9
+  top_k: 0
+  top_p: 0.9
+
+files:
+  dataset_cache: ${hydra:runtime.cwd}/situationchat_original_dataset_cache_GPT2Tokenizer
+  dataset_path: ${hydra:runtime.cwd}/data/situationchat_original.json
+  model_checkpoint: ${hydra:runtime.cwd}/experiments/Jan20_15-41-22_microsoft/DialoGPT-large/
+
+setting:
+  situation: ""
