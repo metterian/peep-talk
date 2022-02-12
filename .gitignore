@@ -18,7 +18,7 @@ outputs/
 data/situationchat_original(augmented).json
 
 #data
-data/situationchat_*
+data/situationchat_original.json
 web.py
 kakao.py
 afl_test.py
@@ -26,3 +26,6 @@ sh/
 data/translation_eng_kor_eos(fixed).xlsx
 data/translation_eng_kor_eos.xlsx
 data/translation_eng_kor(fixed).xlsx
+data/situation_annotation.*
+data/situation_translation.*
+data/translation_eng_kor.xlsx

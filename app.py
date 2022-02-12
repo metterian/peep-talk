@@ -45,7 +45,7 @@ async def message(item: Message):
     lang_score = linguistic.predict(human_history)
     correction = grammar.correct(sentence)
 
-    if int(similarity_score) < 20:
+    if int(similarity_score) < 15:
         message = "Why don't we speak another situation? \nPlease, click the switch button!"
 
     response = Response(
