@@ -1,14 +1,23 @@
 from dataclasses import dataclass
 from typing import Optional, List
+from chatbot import STS_URL
 from fastapi import FastAPI
 import uvicorn
 from fastapi.params import Query
-
+import requests
 from models.context_detector import SituationSimilarity, LinguisticAcceptability
 from models.chatbot import Chatbot
 from models.config import args
-from models import grammar
 
+
+
+def correct(source: str) -> dict:
+    URL = 'http://nlplab.iptime.org:9066/message/'
+    headers = {'accept': 'application/json'}
+    data = {"sentence": source}
+    response = requests.post(URL, json=data, headers=headers)
+    correction = response.json()['correction']
+    return correction
 
 @dataclass
 class Response:
@@ -23,30 +32,39 @@ class Response:
 
 @dataclass
 class Message:
+    personality: List[str]
+    personality_index: int
     user_input: str
 
 
 app = FastAPI()
 chatbot = Chatbot()
-similarity = SituationSimilarity()
+# similarity = SituationSimilarity()
 linguistic = LinguisticAcceptability()
+# gec = GEC()
 
 
 @app.post("/message/")
 async def message(item: Message):
     raw_text = item.user_input
+    personality = item.personality
+    idx = item.personality_index
     sentence = raw_text.strip()
 
-    message = chatbot.send(sentence)
-    human_history = chatbot.get_human_history()
-    gold_history = chatbot.get_gold_history()
+    print("INPUT: ", personality)
 
-    similarity_score = similarity.predict(human_history, gold_history)
-    lang_score = linguistic.predict(human_history)
-    correction = grammar.correct(sentence)
+    message = chatbot.send(personality, sentence)
 
-    if int(similarity_score) < 15:
-        message = "Why don't we speak another situation? \nPlease, click the switch button!"
+
+    similarity_score = requests.post(STS_URL, json={'index': idx, 'sentence': sentence}).json()['score']
+    # similarity_score = similarity.predict(human_history, gold_history)
+    lang_score = linguistic.predict(sentence)
+    correction = correct(sentence)
+
+    print("SIMILARITY SCORE: ", similarity_score)
+    print("LENGTH: ", len(chatbot.history))
+    if int(similarity_score) < 40 and len(chatbot.history) >= 5:
+        message = "Why don't we speak another situation? \nPlease, click the different situation 😇"
 
     response = Response(
         message=message,
@@ -55,7 +73,6 @@ async def message(item: Message):
         personality=chatbot.get_personality(),
         correction=correction,
     )
-    persona_string = '\n'.join(chatbot.get_personality())
     return response
 
 @app.get("/personality/")
@@ -80,4 +97,5 @@ async def switch_perosna():
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=9060)
+    uvicorn.run(app, host="0.0.0.0", port=9045)
+    # uvicorn.run(app, host="0.0.0.0", port=9060)
