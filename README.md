@@ -7,9 +7,8 @@
 <h4 align="center">PEEP-Talk: A Situational Dialogue-Based English Education Platform</h4>
 
 <p align="center">
-    <img alt="python-3.7.7" src="https://img.shields.io/badge/python-3.7.7-blue"/>
-    <img alt="huggingface-3.1.0" src="https://img.shields.io/badge/huggingface-3.1.0-yellow"/>
-    <img alt="pytorch-1.7.0" src="https://img.shields.io/badge/pytorch-1.7.0-blueviolet"/>
+    <img alt="Latest release" src="https://img.shields.io/badge/Latest release-v1.0.0-blue"/>
+    <img alt="Hits" src="https://img.shields.io/badge/Hits-1.3k-yellow"/>
     <img alt="GitHub" src="https://img.shields.io/github/license/metterian/redbttn-seoul-studio"/>
 </p>
 
