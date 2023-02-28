@@ -4,8 +4,7 @@
   <a href="https://pf.kakao.com/_FlDxgs"><img src="https://i.loli.net/2021/10/31/D8Kng1xrlOhHFqL.png" alt="PEEP-Talk Logo"></a>
 </h1>
 
-<h4 align="center">PEEP-Talk: A Situational Conversation-Based English Education Platform</h4>
-<p align="center">Korea University</p>
+<h4 align="center">PEEP-Talk: A Situational Dialogue-Based English Education Platform</h4>
 
 <p align="center">
     <img alt="python-3.7.7" src="https://img.shields.io/badge/python-3.7.7-blue"/>
@@ -45,10 +44,8 @@ To give grammar feedback to english learner, We use GEC(Grammar Error Correction
 
 ## Folder Structure
     .
-    ├── data_preprocessing      # data preprocess
-    ├── alf_test.py             # experiment for context detector
+    ├── train.py                # Train model
     ├── app.py                  # REST API code
-    ├── kakao.py                # REST API code for Kakao Channel
     ├── run.py                  # running PEEP-Talk
     ├── requirements.txt
     ├── LICENSE
@@ -68,9 +65,14 @@ to REST API server:
 python app.py
 ```
 
+to use Streamlit
+```
+streamlit run web.py
+```
+
 
 ## Demo
-- [Web](http://peeptalk.xyz)
+- [Web](http://peeptalk.us)
 - [Video](https://www.youtube.com/watch?v=PXlIEOi54wY)
 
 
