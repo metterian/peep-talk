@@ -1,18 +1,17 @@
 import os
-from typing import List
-from abc import *
-import random
 import pickle
+import random
+from abc import *
+from typing import List
+
 import torch
 import torch.nn.functional as F
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
-from models.config import args
+
 from interact import sample_sequence
+from models.config import args
 from train import add_special_tokens_
 from utils import get_dataset
-
-
-STS_URL = "http://nlplab.iptime.org:9046/sim_score/"
 
 
 def pickle_load(path: str):
@@ -26,39 +25,26 @@ def pickle_save(path: str, data) -> None:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
 
-def laod_dataset(args, tokenizer) -> None:
-    '''Load Persona, History dataset as caches or json files'''
+def load_dataset(args, tokenizer) -> None:
+    """Load Persona, History dataset as caches or json files"""
     dataset = get_dataset(tokenizer, args.dataset_path, args.dataset_cache)
-
-    # load persona cache
-    # if args.persona_cache and os.path.isfile(args.persona_cache):
-    #     personalities = pickle_load(args.persona_cache)
-    # else:
     personalities = [dialog["personality"] for dataset in dataset.values() for dialog in dataset]
-        # pickle_save(path="./cache/persona_cache", data=personalities)
-
-    # load history cache
-    # if args.history_cache and os.path.isfile(args.history_cache):
-    #     history = pickle_load(args.history_cache)
-    # else:
-    # history = [dialog["utterances"][-1]["history"] for dataset in dataset.values() for dialog in dataset]
-        # pickle_save(path="./cache/history_cache", data=history)
-
-    # load utterance
     utterances = [dialog["utterances"] for dataset in dataset.values() for dialog in dataset]
 
     return personalities, utterances, dataset
+
 
 def find_dialog_history(personality, dataset):
     gold_history = []
     for dataset in dataset.values():
         for dialog in dataset:
-            if dialog['personality'] == personality:
+            if dialog["personality"] == personality:
                 gold_history.extend(dialog["utterances"][-1]["history"])
     return gold_history
 
+
 def shuffle_inputs(personalities, utterances, dataset):
-    '''Shuffle the inputs which are persona, utterance and history by the persona index'''
+    """Shuffle the inputs which are persona, utterance and history by the persona index"""
     shuffle_idx = random.choice(range(len(personalities)))
     personality = personalities[shuffle_idx]
     utterance = utterances[shuffle_idx]
@@ -67,9 +53,10 @@ def shuffle_inputs(personalities, utterances, dataset):
 
 
 class Chatbot:
-    '''Conversation Agent model based on Hugging face, using GPT-2'''
+    """Conversation Agent model based on Hugging face, using GPT-2"""
+
     def __init__(self) -> None:
-        '''Initialize tokenizer, model and datasets'''
+        """Initialize tokenizer, model and datasets"""
         if args.seed != 0:
             random.seed(args.seed)
             torch.random.manual_seed(args.seed)
@@ -83,45 +70,35 @@ class Chatbot:
         add_special_tokens_(self.model, self.tokenizer)
 
         # load dataset
-        # personalities, utterances, dataset = laod_dataset(args, self.tokenizer)
-        self.personalities, self.utterances, self.dataset = laod_dataset(args, self.tokenizer)
+        self.personalities, self.utterances, self.dataset = load_dataset(args, self.tokenizer)
 
-        # set personality as shuffing
+        # set personality as shuffling
         self.personality, self.utterance, self.gold_history = shuffle_inputs(self.personalities, self.utterances, self.dataset)
 
         # set history as empty list for recording the conversation
         self.history = []
 
-
-    def send(self, history: str) -> str:
-        '''Receive user input(history) with Persona and send the next utterance.'''
-        self.history = [self.tokenizer(h) for h in history]
+    def send(self, personality: List[str], sentence: str) -> str:
+        """Receive user input(sentence) with Persona and send the next utterance."""
+        self.history.append(self.tokenizer.encode(sentence))
+        self.personality = [self.tokenizer.encode(p) for p in personality]
+        print("SMAPLE:", self.personality)
         with torch.no_grad():
             out_ids = sample_sequence(self.personality, self.history, self.tokenizer, self.model, args)
-            # self.history.append(out_ids)
-            self.history = self.history[-(2*args.max_history+1):]
+            self.history.append(out_ids)
+            self.history = self.history[-(2 * args.max_history + 1) :]
             out_text = self.tokenizer.decode(out_ids, skip_special_tokens=True)
         return out_text
-
-    # def send(self, sentence: str) -> str:
-    #     '''Receive user input(sentence) with Persona and send the next utterance.'''
-    #     self.history.append(self.tokenizer.encode(sentence))
-    #     with torch.no_grad():
-    #         out_ids = sample_sequence(self.personality, self.history, self.tokenizer, self.model, args)
-    #         self.history.append(out_ids)
-    #         self.history = self.history[-(2*args.max_history+1):]
-    #         out_text = self.tokenizer.decode(out_ids, skip_special_tokens=True)
-    #     return out_text
 
     def shuffle(self) -> None:
         self.personality, self.utterance, self.gold_history = shuffle_inputs(self.personalities, self.utterances, self.dataset)
 
     def decode(self, tokens: List[List[str]]) -> List[str]:
-        'Decode the double list by tokenizer'
+        "Decode the double list by tokenizer"
         return [self.tokenizer.decode(token) for token in tokens]
 
     def get_personality(self) -> List[str]:
-        '''Return current personality'''
+        """Return current personality"""
         personality_decoded = self.decode(self.personality)
         print(f"PERSONA:{personality_decoded}")
         return personality_decoded
@@ -130,25 +107,25 @@ class Chatbot:
         return self.history_decoded
 
     def get_human_history(self) -> List[str]:
-        '''Return divide history and get human dialogue'''
+        """Return divide history and get human dialogue"""
         history = self.decode(self.history)
         return history[::2]
 
     def get_chatbot_history(self) -> List[str]:
-        '''Return divide history and get chatbot dialogue'''
+        """Return divide history and get chatbot dialogue"""
         history = self.decode(self.history)
         self.chatbot_history = history
         return history[1::2]
 
     def get_gold_history(self) -> List[List[str]]:
-        max_idx = len(self.gold_history) if len(self.gold_history) < 100 else 100
-        return self.decode(self.gold_history[:max_idx])
+        max_idx = len(self.gold_history) if len(self.gold_history) < 50 else 50
+        # return self.decode(self.gold_history[:max_idx])
+        return self.decode(self.gold_history)
 
     def clear_history(self) -> None:
-        '''Clear the history'''
+        """Clear the history"""
         self.history = []
 
     @property
     def len_history(self) -> int:
         return len(self.history)
-

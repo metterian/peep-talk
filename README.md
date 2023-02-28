@@ -44,9 +44,11 @@ To give grammar feedback to english learner, We use GEC(Grammar Error Correction
 
 ## Folder Structure
     .
-    ├── train.py                # Train model
+    ├── train.py                # train model
     ├── app.py                  # REST API code
     ├── run.py                  # running PEEP-Talk
+    ├── situation_example.py    # example of Situation annotation
+    ├── example_entry.py        # example of SITUATION-CHAT
     ├── requirements.txt
     ├── LICENSE
     └── README.md
@@ -70,6 +72,21 @@ to use Streamlit
 streamlit run web.py
 ```
 
+
+to train conversation module
+```bash
+python ./train.py \
+--dataset_path "data/situationchat_original.json" \
+--model_checkpoint "microsoft/DialoGPT-medium" \
+--gradient_accumulation_steps=4 \
+--max_history=3 \
+--n_epochs=2 \
+--num_candidates=4 \
+--personality_permutations=4 \
+--train_batch_size=8 \
+--valid_batch_size=8
+
+```
 
 ## Demo
 - [Web](http://peeptalk.us)

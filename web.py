@@ -1,6 +1,8 @@
+import json
+import os
 import random
 from dataclasses import asdict, dataclass, field
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Union
 from urllib.parse import urljoin
 
 import numpy as np
@@ -14,25 +16,33 @@ from PIL import Image
 from streamlit_chat import message as st_message
 from truecase import get_true_case
 
+import streamlit_analytics
 from custom_chat import *
-from situation_example import SITUATIONS, SITUATIONS_KEY
+from situation_info import anno_to_situ, situ_to_anno
 
 
 @dataclass
 class PageConfig:
     page_title: str = "PEEP-Talk Demo"
-    page_icon = Image.open("./statics/logo.png")
+    page_icon = "🐤"
     layout: str = "centered"
 
 
-hide_element: str = """<style>header {visibility: hidden;} footer {visibility: hidden;}</style>"""
+@dataclass
+class ChatMode:
+    free_conv = "Free Conversation (자유대화)"
+    practice = "Situation Practice (상황 교육 연습)"
+
+
+hide_element: str = "<style>header {visibility: hidden;} footer {visibility: hidden;}</style>"
 
 st.set_page_config(**asdict(PageConfig()))
 st.markdown(hide_element, unsafe_allow_html=True)
 
 
 # URL = "http://nlplab.iptime.org:9060/"
-URL = "http://nlplab.iptime.org:9045/"  # TEST
+# URL = "http://nlplab.iptime.org:9045/"  # TEST
+URL = "http://nlplab.iptime.org:9031/"  # Alpha
 
 
 @dataclass
@@ -44,8 +54,9 @@ class Feedback:
 
 @dataclass
 class Message:
-    message: str
     is_user: bool
+    text: str
+    feedback: Optional[Feedback] = None
     avatar_style: Optional[str] = None
     seed: Optional[int] = 243355423
 
@@ -53,11 +64,14 @@ class Message:
         if self.avatar_style is None:
             self.avatar_style = "personas" if self.is_user else "bottts"
 
-    def to_dict(self):
-        return asdict(self)
+    # def to_dict(self):
+    #     return asdict(self)
 
     def to_streamlit(self):
         return st_message(**self.to_dict())
+
+    def to_dict(self):
+        return {"text": self.text, "is_user": self.is_user}
 
 
 def annotation(body, label="", background=None, color=None, **style):
@@ -135,54 +149,32 @@ def display_dialogue():
         st.write(f"Bot: {get_true_case(chatbot)}\n\nGEC: {cor_sen}")
 
 
-def get_personality():
-    personality = requests.get(urljoin(URL, "personality")).json()
-    personality = map(lambda string: string.capitalize(), personality)
-    return personality
+@st.experimental_memo
+def load_conv_data():
+    with open("data/situationchat_original.json", "r") as f:
+        data = json.load(f)
+    return data
 
 
-if "chatbot" not in st.session_state:
-    st.session_state["personality"] = []
-    st.session_state["human"] = []
-    st.session_state["chatbot"] = []
-    st.session_state["gec"] = []
-    st.session_state["feedback"] = []
+@st.experimental_memo
+def load_situation_chat():
+    situation_data = json.load(open("data/situationchat_original.json"))["train"]
+    # count how many history in each situation
+    situation_chat = {}
+    for row in situation_data:
+        situation = tuple(row["personality"])
+        history = row["utterances"][-1]["history"] + [row["utterances"][-1]["candidates"][-1]]
+        history = history
 
-    st.session_state["sim_score"] = 0
-    st.session_state["accept_score"] = 0
-    st.session_state["new_option"] = ""
+        if situation not in situation_chat:
+            situation_chat[situation] = {"count": 0, "history": [history]}
 
-    res = requests.get(urljoin(URL, "history/clear"))
-    print(res.json())
-
-
-# Header
-st.image("./statics/logo.png", width=100)
-st.subheader("PEEP-Talk+")
-
-
-# Header Situation
-option_col, bttn_col1, bttn_col2 = st.columns([4, 2, 2])
-
-# Situation options and buttons
-with option_col:
-    st.markdown("**Situation**")
-    option = st.selectbox(
-        "Select the situation",
-        options=SITUATIONS,
-        help="Select the situation to start the conversation",
-        index=0,
-    )
-
-
-if option != st.session_state["new_option"]:
-    res = requests.get(urljoin(URL, "history/clear"))
-    st.session_state.human = []
-    st.session_state.chatbot = []
-    st.session_state["gec"] = []
-    st.session_state["new_option"] = option
-    st.session_state["sim_score"] = 0
-    st.session_state["accept_score"] = 0
+        else:
+            situation_chat[situation]["count"] += 1
+            situation_chat[situation]["history"].extend([history])
+    # sort by number of history
+    situation_chat = dict(sorted(situation_chat.items(), key=lambda item: item[1]["count"], reverse=True)[:30])
+    return situation_chat
 
 
 def display_cd(sim_score: int, accept_score: int, sim_delta=0, accept_delta=0):
@@ -195,89 +187,125 @@ def display_cd(sim_score: int, accept_score: int, sim_delta=0, accept_delta=0):
         st.metric(label="Linguistic Acceptability", value=f"{accept_score}%", delta=f"{accept_delta}%", delta_color="inverse")
 
 
+def clear_history():
+    st.session_state.history = []
+    st.session_state.text_input = ""
+    st.session_state.expander = False
+
+
+def header():
+    st.image("./statics/logo.png", width=100)
+    st.subheader("PEEP-Talk+")
+
+
+situation_chat = load_situation_chat()
+# TODO
+if "situation" not in st.session_state:
+    st.session_state["situation"] = list(anno_to_situ.keys())[0]
+    situation = st.session_state.situation
+    st.session_state["history"] = []
+    st.session_state.text_input = ""
+    st.session_state.expander = False
+
+# * USER ID INPUT
+# st.session_state["is_login"] = False
+
+# if "user_id" not in st.session_state:
+#     with st.form(key="user_id_form"):
+#         st.text_input("전화 번호 뒷자리 4자리를 입력해주세요.", value="", max_chars=4, key="user_id")
+#         submit_button = st.form_submit_button(label="입력")
+#     st.session_state["history"] = []
+#     st.session_state["is_login"] = True
+
+# * Header
+header()
+
+#  define column
+option_col, bttn_col1, bttn_col2 = st.columns([4, 2, 2])
+
+streamlit_analytics.start_tracking()
+with option_col:
+    st.markdown("**Situation**")
+    situation = list(anno_to_situ.keys())[0]
+    st.selectbox(
+        "Select the situation",
+        options=list(anno_to_situ.keys()),
+        help="Select the situation to start the conversation",
+        key="situation",
+        index=0,
+        on_change=clear_history,
+        # disabled=st.session_state.is_login,
+    )
+
+with st.expander("Hint for Situation 👩‍🏫", expanded=st.session_state.expander):
+    st.write("**Situation:**", st.session_state.situation)
+    situ_anno = anno_to_situ[st.session_state.situation]
+
+    # situation_chat = load_situation_chat()
+    random_num = random.randint(0, len(situation_chat[situ_anno]["history"]) - 1)
+    random_history = situation_chat[situ_anno]["history"][random_num]
+
+    sides = [False, True, False, True]
+    for utterance, side in zip(random_history, sides):
+        st_message(get_true_case(utterance), is_user=side)
+    next_bttn = st.button("Next")
+    if next_bttn:
+        st.session_state.expander = True
+
 gec_container = st.container()
 
-human_input = st.text_input(
+# streamlit_analytics.start_tracking()
+text_input = st.text_input(
     "Talk to the chatbot",
-    key="human_input",
+    key="text_input",
     help=None,
     placeholder="My name are john",
     value="",
+    # disabled=st.session_state.is_login,
 )
+streamlit_analytics.stop_tracking(save_to_json="streamlit_analytics/text_input.json")
 
 chat_container = st.container()
 
-if human_input:
-    input_json = {
-        "user_input": human_input,
-        "personality": SITUATIONS[option],
-        "personality_index": SITUATIONS_KEY[option],
+# * Text Input
+if st.session_state.text_input:
+    message = Message(text=st.session_state.text_input, is_user=True)
+
+    st.session_state.history.append(message.to_dict())
+    json_body = {
+        "situation": st.session_state.situation,
+        "history": st.session_state.history,
     }
-    bot_res = requests.post(urljoin(URL, "message"), json=input_json).json()
-    bot_msg = Message(message=bot_res["message"], is_user=False)
+
+    res = requests.post(urljoin(URL, "message"), json=json_body).json()
+    st.session_state.history = res["history"]
 
     feedback = Feedback(
-        situation=round(bot_res["similarity"], 2),
-        ling=round(bot_res["acceptability"], 2),
-        gec=bot_res["correction"],
+        situation=round(res["similarity"], 2),
+        ling=round(res["acceptability"], 2),
+        gec=res["correction"],
     )
-
-    human_msg = Message(
-        message=human_input,
-        is_user=True,
-    )
-
-    bot_msg = Message(
-        message=bot_res["message"],
-        is_user=False,
-    )
-
     with gec_container:
-        st.markdown("**GEC**")
-        st_annotate(*highlight_correction(human_input, bot_res["correction"]))
+        st.markdown("**Grammar Error Correction**")
+        st_annotate(*highlight_correction(st.session_state.text_input, res["correction"]))
         st.write("\n")
 
+    display_cd(round(res["similarity"], 2), round(res["acceptability"], 2), 0, 0)
+
+# * Display chat history
+if st.session_state.history:
+
     with chat_container:
-        user_message = highlight_error(human_input, bot_res["correction"])
-        user_message = render_message(user_message, is_user=True)
-        st.markdown(user_message, unsafe_allow_html=True)
+        for i, msg in enumerate(st.session_state.history):
+            # user's last message
+            if msg["is_user"]:
+                if msg["text"] == text_input:
+                    message = highlight_error(msg["text"], res["correction"])
+                    message = render_message(msg["text"], is_user=True)
+                    st.markdown(message, unsafe_allow_html=True)
+                else:
+                    message = render_message(text=msg["text"], is_user=True)
+                    st.markdown(message, unsafe_allow_html=True)
 
-        st_message(**asdict(bot_msg))
-
-
-# # input user text
-# with st.form(key="user_form", clear_on_submit=True):
-#     user_input = st.text_input(label="Type a message")
-#     submit_button = st.form_submit_button(label="Submit")
-
-#     if submit_button:
-#         st.session_state["human"].append(user_input)
-#         response = requests.post(
-#             urljoin(URL, "message"),
-#             json={
-#                 "user_input": user_input,
-#                 "personality": SITUATIONS[option],
-#                 "personality_index": SITUATIONS_KEY[option],
-#             },
-#         ).json()
-#         st.session_state["chatbot"].append(response["message"])
-#         st.session_state["gec"].append(response["correction"])
-
-
-# # messsage box
-# if submit_button:
-#     with dialogue_container.form(key="bot_form"):
-#         display_dialogue()
-#         sim_score = round(response["similarity"], 2)
-#         accept_score = round(response["acceptability"], 2)
-
-#         sim_delta = round((sim_score - st.session_state.sim_score), 2)
-#         accept_delta = round((accept_score - st.session_state.accept_score), 2)
-
-#         st.session_state.sim_score = sim_score
-#         st.session_state.accept_score = accept_score
-
-#         reset_button = st.form_submit_button(
-#             label="",
-#             on_click=diplay_cd(sim_score, accept_score, sim_delta, accept_delta),
-#         )
+            else:
+                st_message(message=get_true_case(msg["text"]), is_user=msg["is_user"], avatar_style="bottts", seed=43)
