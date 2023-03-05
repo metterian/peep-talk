@@ -21,7 +21,7 @@ class ContextDetector:
         self.model.to(self.device)
 
 
-class SituationSimilarity(ContextDector):
+class SituationSimilarity(ContextDetector):
     """Get similarity between personality and history using fine-tuned model by MRPC dataset"""
 
     def __init__(self, model_name="textattack/xlnet-base-cased-MRPC") -> None:
@@ -43,7 +43,7 @@ class SituationSimilarity(ContextDector):
         return score_max * 100
 
 
-class LinguisticAcceptability(ContextDector):
+class LinguisticAcceptability(ContextDetector):
     """Get a score on how linguistically acceptable a user's input sentence using fine-tuned by CoLA dataset"""
 
     def __init__(self, model_name="textattack/roberta-base-CoLA") -> None:
